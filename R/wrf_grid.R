@@ -3,7 +3,7 @@
 #' @description Return a Spatial Feature multipolygon or matrix
 #'
 #' @param filewrf wrf file
-#' @param type Type or wrf file: "wrfinput" or "geo". When type is "geo", lat
+#' @param type Type of wrf file: "wrfinput" or "geo". When type is "geo", lat
 #' long comes from mass grid, XLONG_M and XLAT_M
 #' @param matrix if the output is matrix or polygon (sf)
 #' @param epsg epsg code number (see http://spatialreference.org/ref/epsg/)
@@ -24,9 +24,9 @@ wrf_grid <- function(filewrf, type = "wrfinput", matrix = F, epsg = 4326){
   if(type == "wrfinput"){
     lat    <- ncdf4::ncvar_get(wrf, varid = "XLAT")
     lon    <- ncdf4::ncvar_get(wrf, varid = "XLONG")
-  } else if(type == "geo"){
-    lat    <- ncdf4::ncvar_get(wrf, varid = "XLAT_M")
-    lon    <- ncdf4::ncvar_get(wrf, varid = "XLONG_M")
+  } else if(type == "geo"){                            # nocov
+    lat    <- ncdf4::ncvar_get(wrf, varid = "XLAT_M")  # nocov
+    lon    <- ncdf4::ncvar_get(wrf, varid = "XLONG_M") # nocov
   }
   time   <- ncdf4::ncvar_get(wrf, varid = "Times")
   dx     <- ncdf4::ncatt_get(wrf, varid = 0,
@@ -82,6 +82,7 @@ wrf_grid <- function(filewrf, type = "wrfinput", matrix = F, epsg = 4326){
   grid <- sf::st_cast(x = st_sf(geometry = geometry, crs = epsg),
                       to = "POLYGON")
   grid$id <- 1:nrow(grid)
+
   if (matrix == T){
     return(EM)
   } else {

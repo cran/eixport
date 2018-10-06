@@ -5,17 +5,20 @@
 \title{Function to read variables of emission files}
 \format{array or raster object}
 \usage{
-wrf_get(file = file.choose(), name = NA, as_raster = F,
-  raster_crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+wrf_get(file = file.choose(), name = NA, as_raster = FALSE,
+  raster_crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+  raster_lev = 1)
 }
 \arguments{
 \item{file}{name of file interactively (default) or specified}
 
 \item{name}{name of the variable (any variable)}
 
-\item{as_raster}{return a raster instead of a array}
+\item{as_raster}{return a raster instead of an array}
 
-\item{raster_crs}{crs to used if as_raster is TRUE}
+\item{raster_crs}{crs to use if as_raster is TRUE}
+
+\item{raster_lev}{level for rasters from a 4D variable}
 }
 \description{
 Read a variable
@@ -37,6 +40,8 @@ files <- list.files(path = file.path(tempdir(), "EMISS"),
 CO <- wrf_get(file = files[1], name = "E_CO")
 CO[] = rnorm(length(CO))
 wrf_put(file = files[1], name = "E_CO", POL = CO)
+COr <- wrf_get(file = files[1], name = "E_CO", as_raster = TRUE)
+
 }
 }
 \seealso{

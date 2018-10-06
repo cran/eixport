@@ -4,8 +4,9 @@
 #'
 #' @param file name of file interactively (default) or specified
 #' @param name name of the variable (any variable)
-#' @param as_raster return a raster instead of a array
-#' @param raster_crs crs to used if as_raster is TRUE
+#' @param as_raster return a raster instead of an array
+#' @param raster_crs crs to use if as_raster is TRUE
+#' @param raster_lev level for rasters from a 4D variable
 #'
 #' @format array or raster object
 #'
@@ -35,18 +36,30 @@
 #' CO <- wrf_get(file = files[1], name = "E_CO")
 #' CO[] = rnorm(length(CO))
 #' wrf_put(file = files[1], name = "E_CO", POL = CO)
+#' COr <- wrf_get(file = files[1], name = "E_CO", as_raster = TRUE)
+#'
 #'}
-wrf_get <- function(file = file.choose(), name = NA, as_raster = F,
-                    raster_crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"){
-  wrfchem <- ncdf4::nc_open(file)
-  if(is.na(name)){
-   name  <- menu(names(wrfchem$var), title = "Chose the variable:")
-    name  <- names(wrfchem$var)[name]
-    POL   <- ncdf4::ncvar_get(wrfchem, name)
+wrf_get <- function(file = file.choose(), name = NA, as_raster = FALSE,
+                    raster_crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+                    raster_lev = 1){
+  wrfchem <- ncdf4::nc_open(file)                                       # iteractive
+  if(is.na(name)){                                                      # nocov start
+    name  <- menu(names(wrfchem$var), title = "Choose the variable:")
+    POL   <- ncdf4::ncvar_get(wrfchem, names(wrfchem$var)[name])
+    name  <- names(wrfchem$var)[name]                                   # nocov end
   }else{
-    POL   <- ncdf4::ncvar_get(wrfchem, name)
+    POL   <- ncvar_get(wrfchem,name)
   }
   if(as_raster){
+    if(length(dim(POL)) >= 5)                                                  # nocov start
+      stop("images with 5D or more not suported")
+
+    if(length(dim(POL)) == 4){
+      cat(paste0("4D images not supported, making a 3D RasterBrick using level ",
+                 raster_lev," of the file\n"))
+      POL <- POL[,,raster_lev,,drop = T]
+    }                                                                          # nocov end
+
     lat    <- ncdf4::ncvar_get(wrfchem, varid = "XLAT")
     lon    <- ncdf4::ncvar_get(wrfchem, varid = "XLONG")
     time   <- ncdf4::ncvar_get(wrfchem, varid = "Times")
@@ -66,19 +79,20 @@ wrf_get <- function(file = file.choose(), name = NA, as_raster = F,
                           ymx=r.lat[2])
       r <- raster::flip(r,2)
     }
-    if(n >= 1){
-      r <- raster::brick(x = aperm(POL, c(2, 1, 3)),
+    if(n > 1){                                        # for emissions in 2D+time
+      r <- raster::brick(x = aperm(POL, c(2, 1, 3)),  # nocov start
                          xmn = r.lon[1],
                          xmx = r.lon[2],
                          ymn = r.lat[1],
                          ymx = r.lat[2])
-      r <- raster::flip(r,2)
+      r <- raster::flip(r,2)                          # nocov end
     }
     raster::crs(r)   <- sp::CRS(raster_crs)
     names(r) <- paste(name,time,sep="_")
     ncdf4::nc_close(wrfchem)
     return(r)
+  } else {
+    ncdf4::nc_close(wrfchem)
+    return(POL)
   }
-  ncdf4::nc_close(wrfchem)
-  return(POL)
 }

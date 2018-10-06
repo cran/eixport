@@ -4,7 +4,7 @@
 \name{emisco}
 \alias{emisco}
 \title{Emissions from VEIN demo}
-\format{A sf object of lines with 288 rows and 15 variables:
+\format{A \code{sf} object of type LINESTRING with 288 rows and 15 variables:
 \describe{
   \item{ldv}{Light Duty Vehicles (1/h)}
   \item{hdv}{Heavy Duty Vehicles (1/h)}
@@ -15,7 +15,7 @@
   \item{lanes}{Number of lanes per link}
   \item{capacity}{Capacity of vehicles in each link (1/h)}
   \item{tmin}{Time for travelling each link (min)}
-  \item{V8}{Emissions}
+  \item{V8}{Emissions (g/s)}
   \item{xmin}{Initial x coordinates}
   \item{xmax}{Ending x coordinates}
   \item{ymin}{Initial y coordinates}
@@ -24,12 +24,12 @@
   data(emisco)
 }}
 \source{
-\url{https://github.com/ibarraespinosa/vein}
+\url{https://github.com/atmoschem/vein}
 }
 \usage{
 data(emisco)
 }
 \description{
-Emissions iwth units for R-LINE
+Emissions with units for R-LINE
 }
 \keyword{datasets}

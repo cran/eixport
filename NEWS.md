@@ -1,12 +1,46 @@
 NEWS
 ===========
 
-# eixport 0.3.0 (Release date: 23 February 2018)
+# eixport 0.3.6 (Release date: 05 out 2018)
+
+- update wrf_create for WRF 4.0.1 and detailed documentation for this function ( fix #36 )
+- update emis_opt for WRF 4.0.1
+
+# eixport 0.3.5 (Release date: 21 Jun 2018)
+
+- Add to_munich. Fix #18.
+
+# eixport 0.3.4 (Release date: 26 May 2018)
+
+### eixport 0.3.4 (Release date: 26 May 2018)
+
+- Fix to_as4wrf when sdf is list..
+
+
+# eixport 0.3.3 (Release date: 23 April 2018)
+
+### eixport 0.3.3 (Release date: 23 April 2018)
+
+- Added data gCO.
+- Added function as4wrf.
+- Added tests. 
+
+### eixport 0.3.2 (Release date: 29 March 2018)
+
+- Documentation.
+
+### eixport 0.3.1 (Release date: 4 March 2014)
+
+- Documentation.
+
+## eixport 0.3.0 (Release date: 23 February 2018)
 
 ### eixport 0.3.0 (Release date: 23 February 2018)
 
 - Remove regrid.
 - Prepare submissions to JOSS
+- exemple fix
+- remove warning message
 
 ## eixport v0.2.10 (Release date: 19 January 2018)
 

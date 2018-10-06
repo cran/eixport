@@ -8,13 +8,14 @@
 #' @param nivel level from the emission file
 #' @param barra barblot if TRUE
 #' @param lbarra length of barplot
+#' @param col color vector
 #' @param verbose if TRUE print some information
 #' @param ... Arguments to be passed to plot methods
 #'
 #' @note If the file contains levels (kemit>1), and one frame (auxinput5_interval_m = 1)
 #' time with control the level which will be ploted
 #'
-#' @note In case of a error related to plot.new() margins lbarra must be adjusted
+#' @note In case of an error related to plot.new() margins lbarra must be adjusted
 #'
 #' @author Daniel Schuch
 #'
@@ -22,9 +23,10 @@
 #' @importFrom grDevices cm.colors gray.colors
 #' @importFrom graphics .filled.contour Axis axis box layout mtext par plot.new plot.window rect title
 #' @importFrom utils menu
+#' @importFrom cptcity cpt
 #' @export
 #'
-#' @seealso \code{\link{wrf_get}} and \code{\link{wrf_create}}
+#' @seealso \code{\link{Lights}}, \code{\link{to_wrf}} and \code{\link{wrf_create}}
 #'
 #' @examples {
 #'
@@ -37,7 +39,10 @@
 #'                    pattern = "wrfchemi",
 #'                    full.names = TRUE)
 #'
-#'# open, put some numbers and write
+#'# load end write some data in this emission file
+#'data(Lights)
+#'to_wrf(Lights, files[1], total = 1521983, names = "E_CO")
+#'
 #'wrf_plot(files[1], "E_CO")
 #'}
 wrf_plot <- function(file = file.choose(),
@@ -46,13 +51,14 @@ wrf_plot <- function(file = file.choose(),
                      nivel = 1,
                      barra = T,
                      lbarra = 0.2,
+                     col = cptcity::cpt(n = 13),
                      verbose = T,
                      ...){
-  wrfchem <- ncdf4::nc_open(file)
-  if(is.na(name)){
-    name  <- menu(names(wrfchem$var), title = "Chose the variable:")
+  wrfchem <- ncdf4::nc_open(file)                                      # iteractive
+  if(is.na(name)){                                                     # nocov start
+    name  <- menu(names(wrfchem$var), title = "Choose the variable:")
     POL   <- ncdf4::ncvar_get(wrfchem, names(wrfchem$var)[name])
-    name  <- names(wrfchem$var)[name]
+    name  <- names(wrfchem$var)[name]                                  # nocov end
   }else{
     POL   <- ncvar_get(wrfchem,name)
   }
@@ -69,20 +75,20 @@ wrf_plot <- function(file = file.choose(),
   ncdf4::nc_close(wrfchem)
 
   if(length(dim(POL)) == 3){
-    POL <- POL[,,time]
+    POL <- POL[,,time]               # nocov
   }
   if(length(dim(POL)) == 4){
-    POL <- POL[,,nivel,time]
+    POL <- POL[,,nivel,time]         # nocov
   }
 
   if(verbose){
     print(wrfchem$filename)
     print(name)
     if(max(POL) == min(POL)){
-      warning("Max value = Min Value!")
+      cat("Max value = Min Value!") # nocov
     }
     else{
-      print(paste("Max value: ",max(POL),", Min value: ",min(POL),sep = ""))
+      cat(paste("Max value: ",max(POL),", Min value: ",min(POL),sep = ""))
     }
   }
 
@@ -92,9 +98,9 @@ wrf_plot <- function(file = file.choose(),
                                 ylim = range(y, finite = TRUE),
                                 zlim = range(z, finite = TRUE),
                                 levels = pretty(zlim, nlevels),
-                                nlevels = 20,
+                                nlevels = length(col),
                                 color.palette = cm.colors,
-                                col = gray.colors(length(levels)-1),
+                                col = col,
                                 plot.title,
                                 plot.axes,
                                 key.title,
@@ -107,25 +113,25 @@ wrf_plot <- function(file = file.choose(),
                                 frame.plot = axes,
                                 mar, ...) {
     if (missing(z)) {
-      if (!missing(x)) {
-        if (is.list(x)) {
-          z <- x$z
-          y <- x$y
-          x <- x$x
+      if (!missing(x)) {                             # nocov
+        if (is.list(x)) {                            # nocov
+          z <- x$z                                   # nocov
+          y <- x$y                                   # nocov
+          x <- x$x                                   # nocov
         }
         else {
-          z <- x
-          x <- seq.int(0, 1, length.out = nrow(z))
+          z <- x                                     # nocov
+          x <- seq.int(0, 1, length.out = nrow(z))   # nocov
         }
       }
-      else stop("no 'z' matrix specified")
+      else stop("no 'z' matrix specified")           # nocov
     }
     else if (is.list(x)) {
-      y <- x$y
-      x <- x$x
+      y <- x$y                                       # nocov
+      x <- x$x                                       # nocov
     }
     if (any(diff(x) <= 0) || any(diff(y) <= 0))
-      stop("increasing 'x' and 'y' values expected")
+      stop("increasing 'x' and 'y' values expected") # nocov
     mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
     w <- (3 + mar.orig[2]) * par("csi") * 2.54
     par(las = las)
@@ -134,9 +140,9 @@ wrf_plot <- function(file = file.choose(),
     par(mar=mar)
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1)
-      stop("no proper 'z' matrix specified")
+      stop("no proper 'z' matrix specified")         # nocov
     if (!is.double(z))
-      storage.mode(z) <- "double"
+      storage.mode(z) <- "double"                    # nocov
     .filled.contour(as.double(x), as.double(y), z, as.double(levels), col = col)
     .filled.contour(x, y, z, c(levels[length(levels)],999999), col[length(col)])
     if (missing(plot.axes)) {
@@ -146,20 +152,20 @@ wrf_plot <- function(file = file.choose(),
         Axis(y, side = 2)
       }
     }
-    else plot.axes
+    else plot.axes                                   # nocov
     if (frame.plot)
       box()
     if (missing(plot.title))
       title(...)
-    else plot.title
+    else plot.title                                  # nocov
     invisible()
   }
 
 
   barras <- function(x,
-                     levels = pretty(x),
-                     n = length(levels),
-                     col = gray.colors(length(levels)-1),
+                     levels = pretty(x,nlevels),
+                     nlevels = length(col),
+                     col    = gray.colors(length(levels)-1),
                      titulo = "",...){
     plot.new()
     plot.window(xlim = c(0, 1), ylim = range(levels), xaxs = "i", yaxs = "i")
@@ -179,13 +185,13 @@ wrf_plot <- function(file = file.choose(),
            widths = c(1,lbarra))
     par(mar=c(3.5, 3.5, 3, 0))
   }
-  filled.contour2(x, y, POL)
+  filled.contour2(x, y, POL, col = col)
   mtext(paste("WRF-Chem emissions - Time:", Times[time]), 3, line = 0.8)
   mtext("Latitude", 2, line = 2.2,cex = 1.2, las=0)
   mtext("Longitude", 1, line = 2.2,cex = 1.2)
   if(barra){
     par(mar = c(3.5, 1, 3, 4))
-    barras(POL)
+    barras(POL, col = col)
     mtext(name, 3, line = 0.8)
     par(old.par)
     par(mfrow = c(1, 1))
