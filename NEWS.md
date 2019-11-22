@@ -1,6 +1,21 @@
 NEWS
 ===========
 
+# eixport 0.4.0 (Release date: 14 nov 2019)
+- adds sfx_explode to split lines with https://github.com/hypertidy/silicate/issues/102
+- adds as-raster in wrf_grid
+
+# eixport 0.3.9 (Release date: 24 oct 2019)
+- adds get_edgar
+
+# eixport 0.3.8 (Release date: 19 fev 2019)
+- wrf_create update: windowns files has '%3A' on ':' to autorename when transferred with WinSCP
+- wrf_profile update
+- to_wrf update
+
+# eixport 0.3.7 (Release date: 01 nov 2018)
+- added wrf_add function
+
 # eixport 0.3.6 (Release date: 05 out 2018)
 
 - update wrf_create for WRF 4.0.1 and detailed documentation for this function ( fix #36 )

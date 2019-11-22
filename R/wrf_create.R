@@ -31,9 +31,7 @@
 #' @note Using io_style_emissions = 1, the wrfchemi_00z will be generated with day_offset = 0 and
 #' wrfchemi_12z with day_offset = 0.5 (frames_per_auxinput5 and auxinput5_interval_m will have no effect).
 #'
-#' @note Windows users need to rename the emission files
-#' from 'wrfchemi_d01_2011-08-01_00_00_00' to 'wrfchemi_d01_2011-08-01_00:00:00'
-#' or change in namelist the defoult filename before run wrf.exe with these files.
+#' @note Windows users may need to rename the emission files or change in namelist the defoult filename before run wrf.exe with these emission files.
 #'
 #' @author Daniel Schuch
 #'
@@ -76,7 +74,7 @@
 #'}
 
 wrf_create  <- function(wrfinput_dir         = getwd(),
-                        wrfchemi_dir         = getwd(),
+                        wrfchemi_dir         = wrfinput_dir,
                         domains              = 1,
                         frames_per_auxinput5 = 1,
                         auxinput5_interval_m = 60,
@@ -95,7 +93,7 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
   if(a[[1]] == "Windows") linux = F else linux = T # nocov
   if(a[[1]] == "Windows")
     if(io_style_emissions == 2) #nocov
-      cat("\nNOTE: rename the output or change the default filename in namelist before run\n")#nocov
+      cat("NOTE: see wrf_create domumentation notes before run\n")#nocov
 
   if(length(variables) == 1){
     emis_opt <- NULL
@@ -126,7 +124,7 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
       }
     }
 
-    date <- date + 86400 * day_offset
+    date         <- date + 86400 * day_offset
     hora         <- format(date,"%H")
     minuto       <- format(date,"%M")
     segundo      <- format(date,"%S")
@@ -150,7 +148,7 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
                                    "_",hora,":", minuto,":", segundo, sep = "")
       } else  file_name <- paste(wrfchemi_dir, "/wrfchemi_d0", domain, "_",
                                  format(date,"%Y-%m-%d"),
-                                 "_", hora, "_", minuto, "_", segundo, sep = "")   # nocov end
+                                 "_", hora, "%3A", minuto, "%3A", segundo, sep = "")# nocov end
     }
 
     if(frames_per_auxinput5 == 1){
@@ -375,5 +373,6 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
       print(emiss_file)
     }
     ncdf4::nc_close(emiss_file)
+    ncdf4::nc_close(wrfinput)
   }
 }

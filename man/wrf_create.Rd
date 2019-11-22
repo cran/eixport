@@ -4,7 +4,7 @@
 \alias{wrf_create}
 \title{Create emission files for the WRF-Chem model}
 \usage{
-wrf_create(wrfinput_dir = getwd(), wrfchemi_dir = getwd(),
+wrf_create(wrfinput_dir = getwd(), wrfchemi_dir = wrfinput_dir,
   domains = 1, frames_per_auxinput5 = 1, auxinput5_interval_m = 60,
   day_offset = 0, io_style_emissions = 2, kemit = 1,
   variables = "ecbmz_mosaic", n_aero = 14, COMPRESS = NA,
@@ -58,9 +58,7 @@ Title argument will be written on global attribute TITLE, from the version 4.0 t
 Using io_style_emissions = 1, the wrfchemi_00z will be generated with day_offset = 0 and
 wrfchemi_12z with day_offset = 0.5 (frames_per_auxinput5 and auxinput5_interval_m will have no effect).
 
-Windows users need to rename the emission files
-from 'wrfchemi_d01_2011-08-01_00_00_00' to 'wrfchemi_d01_2011-08-01_00:00:00'
-or change in namelist the defoult filename before run wrf.exe with these files.
+Windows users may need to rename the emission files or change in namelist the defoult filename before run wrf.exe with these emission files.
 }
 \examples{
 \dontrun{
