@@ -1,6 +1,25 @@
 NEWS
 ===========
 
+# eixport 0.4.4 (Release date: 23 feb 2020)
+- update wrf_grid.
+
+# eixport 0.4.3 (Release date: 07 feb 2020)
+- internal changes on wrf_create, os replaced for separator for minimal structural changes
+
+# eixport 0.4.3 (Release date: 28 jan 2020)
+- add argument change_latlon in wrf_grid
+
+# eixport 0.4.3 (Release date: 22 jan 2020)
+- add argument 'os' in wrf_create to control the name in the resulting file
+
+# eixport 0.4.2 (Release date: 22 nov 2019)
+- added 'time' option to wrf_get to return a POSIXlt object from model time
+- wrf_put works with POSIXlt objects for Times/time variable
+
+# eixport 0.4.1 (Release date: 22 nov 2019)
+- improves wrf_put, argument mult now can have any length supporting different hourly profiles
+
 # eixport 0.4.0 (Release date: 14 nov 2019)
 - adds sfx_explode to split lines with https://github.com/hypertidy/silicate/issues/102
 - adds as-raster in wrf_grid

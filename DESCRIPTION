@@ -1,7 +1,7 @@
 Package: eixport
 Title: Export Emissions to Atmospheric Models
-Version: 0.4.0
-Date: 2019-11-20
+Version: 0.4.4
+Date: 2020-02-23
 Authors@R: c(
   person(given = "Sergio",
          family = "Ibarra-Espinosa",
@@ -28,14 +28,14 @@ Imports: sf, ncdf4, raster, sp, methods, cptcity, utils, tidyr,
         silicate, sfheaders
 Encoding: UTF-8
 LazyData: no
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2.9000
 Suggests: testthat, covr, lwgeom
 NeedsCompilation: no
-Packaged: 2019-11-22 14:15:30 UTC; sergio
+Packaged: 2020-02-24 03:26:31 UTC; sergio
 Author: Sergio Ibarra-Espinosa [aut, cre]
     (<https://orcid.org/0000-0002-3162-1905>),
   Daniel Schuch [ctb] (<https://orcid.org/0000-0001-5977-4519>),
   Edmilson Freitas [ctb] (<https://orcid.org/0000-0001-8783-2747>)
 Maintainer: Sergio Ibarra-Espinosa <sergio.ibarra@usp.br>
 Repository: CRAN
-Date/Publication: 2019-11-22 15:00:05 UTC
+Date/Publication: 2020-02-24 05:30:06 UTC
