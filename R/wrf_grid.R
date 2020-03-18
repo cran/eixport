@@ -56,7 +56,7 @@ wrf_grid <- function(filewrf,
   }
 
   # raster
-  r <- raster::raster(t(EM),
+  r <- raster::raster(EM,
                       xmn = min(lon),
                       xmx = max(lon),
                       ymn = min(lat),
@@ -69,6 +69,8 @@ wrf_grid <- function(filewrf,
   #sf
   r <- raster::rasterToPolygons(r)
   grid <- sf::st_as_sf(r)
+  names(grid)[1] <- "id"
+  grid$id <- 1:nrow(grid)
 
   # points      <- data.frame(lat  = c(lat), long = c(lon))
   # points$lat  <- as.numeric(points$lat)
