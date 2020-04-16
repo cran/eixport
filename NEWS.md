@@ -1,6 +1,9 @@
 NEWS
 ===========
 
+# eixport 0.4.6 (Release date: 13 ab 2020)
+- update imported packages to avoid errors for CRAN.
+
 # eixport 0.4.5 (Release date: 24 feb 2020)
 - update wrf_grid.
 - improves docs.

@@ -1,7 +1,7 @@
-ed5e48faa34678a30b63b2c70cf54bc7 *DESCRIPTION
+48809995219207bbff94a79c65e078c4 *DESCRIPTION
 4afdb6ec62bc393f0b3af2a1952541d0 *LICENSE
 32ca2c5cbb7a3ef82148849f7c5f1b4e *NAMESPACE
-170ae020e0a8d135e92028bd6ecfd3bc *NEWS.md
+e71e5e2c4a9cd4ce77321117dabb854f *NEWS.md
 c7f123747cc0f5c812aefe9648ea4268 *R/Lights.R
 b4fe12876c37f8a22cde06e9701eecf0 *R/eixport-package.R
 f1f40c853bee3aaf91f8206aac1e5012 *R/emis_opt.R
@@ -9,7 +9,7 @@ ab84957cc7c83ee84e003ce12c8ea840 *R/emisco.R
 14f6ac2e14e27fd4099670ded4e735fe *R/gCO.R
 f54ac27f3c9833105dcd23d52c7bc1c0 *R/get_edgar.R
 92b67fc9b6f79aa417ecb0eba3ad7694 *R/rawprofile.R
-4835337e7b71e76332b901cdde9f6088 *R/sfx_explode.R
+367c1925ff7ecb4675da00efd2f099c4 *R/sfx_explode.R
 f079370ce1bd0e17386ce78a13b5e24e *R/st_explode.R
 fe050d9c26e15a692f9c2e0da3d295c4 *R/sysdata.rda
 c36438067fa9ace5170c002ec80855a2 *R/to_as4wrf.R
@@ -19,7 +19,7 @@ d9b3542673ae7b013d15d32ad6de65ba *R/to_brams_spm.R
 943141525ede36eb0ea28bac49686275 *R/to_wrf.R
 713034fca9d36766a019ef3ed237837b *R/wrf_add.R
 98951e392c53af6069310b48c077916e *R/wrf_create.R
-119b3beb2762b6094d47798549f83d50 *R/wrf_get.R
+c8d44fcd48048b2bd5d3b2a823e485b0 *R/wrf_get.R
 912ccf4e70b4c9a7b554a98230f437ab *R/wrf_grid.R
 38091a40a0fe54a28fb4d060c7705add *R/wrf_plot.R
 1770690be86a3fa70c773f569666dd55 *R/wrf_profile.R
@@ -56,18 +56,3 @@ e5064b6954b6e12c1bb91f82df93f167 *man/wrf_add.Rd
 bffa329abf6d4d5277fdba674f68cf25 *man/wrf_plot.Rd
 4f1ef29080436c5a2c80b2b4dc3c58a7 *man/wrf_profile.Rd
 495ff71600049984d5c431a3fd4933ac *man/wrf_put.Rd
-8b0c5765c35471e9c6aa917371257f3b *tests/testthat.R
-04f44e5a45c9db5c571b16450a77cfff *tests/testthat/Rplots.pdf
-e869ae613bf4ec5f2922bbaeaac8cbc4 *tests/testthat/test-get_edgar.R
-3277dd1a25a10cd7fbd24d6c9a7b5ac1 *tests/testthat/test-sfx_exploder.R
-07708d9533c33ff23f656f46b106d8e1 *tests/testthat/test-to_as4wrf.R
-e912adfc5439a2d367bca861e7911637 *tests/testthat/test-to_brams_spm.R
-abc7b32a40bfae21997506e631ec1338 *tests/testthat/test-to_munich.R
-ba26fac2b02f877aca25e22172684454 *tests/testthat/test-to_rline.R
-b2e0c863583545f15464383cc6bae4a5 *tests/testthat/test-to_wrf.R
-c69d93e2a6516ddab3d7552d1e6783cb *tests/testthat/test-wrf_create.R
-848a3503a6d525ebf6529dae527b6008 *tests/testthat/test-wrf_get.R
-fe1cb0999789c6acb2055850ed17ec36 *tests/testthat/test-wrf_grid.R
-2c30a995660318b82c36bb681ab10c93 *tests/testthat/test-wrf_plot.R
-e7e4f58aa32188a00cf7d024bce1382f *tests/testthat/test-wrf_profile.R
-3219e26c75a6021d4ee0d0fc561759e8 *tests/testthat/test-wrf_put.R
