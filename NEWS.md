@@ -1,7 +1,10 @@
 NEWS
 ===========
 
-# eixport 0.4.6 (Release date: 13 ab 2020)
+# eixport 0.4.7 (Release date: 24 jun 2020)
+- Add wrf_meta to return attributes from a wrf tile into a data.frame.
+
+# eixport 0.4.6 (Release date: 13 apr 2020)
 - update imported packages to avoid errors for CRAN.
 
 # eixport 0.4.5 (Release date: 24 feb 2020)

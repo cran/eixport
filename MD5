@@ -1,7 +1,7 @@
-48809995219207bbff94a79c65e078c4 *DESCRIPTION
+175cd6b3072b0406b63d757248db7928 *DESCRIPTION
 4afdb6ec62bc393f0b3af2a1952541d0 *LICENSE
-32ca2c5cbb7a3ef82148849f7c5f1b4e *NAMESPACE
-e71e5e2c4a9cd4ce77321117dabb854f *NEWS.md
+85aeecb96076c254853de7d044bf28e2 *NAMESPACE
+9e396bc090c3137bb6f9790c49496879 *NEWS.md
 c7f123747cc0f5c812aefe9648ea4268 *R/Lights.R
 b4fe12876c37f8a22cde06e9701eecf0 *R/eixport-package.R
 f1f40c853bee3aaf91f8206aac1e5012 *R/emis_opt.R
@@ -21,6 +21,7 @@ d9b3542673ae7b013d15d32ad6de65ba *R/to_brams_spm.R
 98951e392c53af6069310b48c077916e *R/wrf_create.R
 c8d44fcd48048b2bd5d3b2a823e485b0 *R/wrf_get.R
 912ccf4e70b4c9a7b554a98230f437ab *R/wrf_grid.R
+045614ccd56367912fe45cbc52a2d96b *R/wrf_meta.R
 38091a40a0fe54a28fb4d060c7705add *R/wrf_plot.R
 1770690be86a3fa70c773f569666dd55 *R/wrf_profile.R
 746d6a2e892b3245aa384d240ef1d79b *R/wrf_put.R
@@ -53,6 +54,7 @@ e5064b6954b6e12c1bb91f82df93f167 *man/wrf_add.Rd
 8b34db3d9924390beb5cc017a5ae54c3 *man/wrf_create.Rd
 89bdfd5650cbf0f1897ee08428d7d018 *man/wrf_get.Rd
 00003a89d3fe3bb1648ef0723e5f5615 *man/wrf_grid.Rd
+bdc807dfb2cdebb7ab0f43373e8a079b *man/wrf_meta.Rd
 bffa329abf6d4d5277fdba674f68cf25 *man/wrf_plot.Rd
 4f1ef29080436c5a2c80b2b4dc3c58a7 *man/wrf_profile.Rd
 495ff71600049984d5c431a3fd4933ac *man/wrf_put.Rd
