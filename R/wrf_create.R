@@ -20,7 +20,7 @@
 #' @param day_offset number of days (can be a fraction) see Details
 #' @param io_style_emissions from wrf &chem namelist.input see Details
 #' @param kemit from wrf &chem namelist.input, number of vertical levels of the emission file
-#' @param variables emission species, can be used data(emis_opt)
+#' @param variables emission species, can be used `emis_opt`
 #' @param n_aero number of aerosol species
 #' @param COMPRESS integer between 1 (least compr) and 9 (most compr) or NA for
 #' no compression
@@ -38,7 +38,7 @@
 #'
 #' @author Daniel Schuch
 #'
-#' @import ncdf4
+#' @importFrom  ncdf4 nc_open nc_close ncvar_get ncvar_put ncdim_def ncvar_def ncatt_put
 #'
 #' @export
 #'
@@ -94,14 +94,15 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
 {
   a <- Sys.info()["sysname"]
   # to avoid special chacacteres in the filename
-  if(a[[1]] == "Windows") linux = F else linux = T # nocov
+  if(a[[1]] == "Windows") linux = FALSE else linux = TRUE # nocov
   if(a[[1]] == "Windows")
     if(io_style_emissions == 2) #nocov
       cat("NOTE: see wrf_create domumentation notes before run\n")  #nocov
 
   if(length(variables) == 1){
-    emis_opt <- NULL
-    load(system.file("data/emis_opt.rda", package = "eixport"))
+    emis_opt <- sysdata$emis_opt
+    # emis_opt <- NULL
+    # load(system.file("data/emis_opt.rda", package = "eixport"))
     if(variables %in% names(emis_opt)){
       variables <- emis_opt[[variables]]
     }else{
@@ -380,7 +381,7 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
                        attval = 104)
     }
     if(verbose){
-      print(emiss_file)
+      print(emiss_file, "\n")
     }
     ncdf4::nc_close(emiss_file)
     ncdf4::nc_close(wrfinput)

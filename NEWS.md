@@ -1,6 +1,22 @@
 NEWS
 ===========
 
+# eixport 0.5.0 (Release date: 12 nov 2020)
+- Add wrf_summary
+- fix #56
+- add neu_ecb05 which is ecb05_opt2 avvording Northeastern University group.
+-update emisco
+- remove geometry arguments from to_rline, now derived in to_rline
+- replaces sfx_explode with own function with data.table.
+- Drops dependence on tidyr, silicate (>= 0.3), sfheaders (>= 0.2.1).
+- Update chem_edgar neu_cb05 (2020-11-07)
+- Add articleto plot domains
+
+# eixport 0.4.10 (Release date: 24 sep 2020)
+- Add `chem_edgar` to read EDGAR`s NetCDF and return RasterStack from Chemical Mechanism.
+`chem_edgar` includes units conversion and messages.
+- Improve documentation
+
 # eixport 0.4.9 (Release date: 26 ago 2020)
 - Included EDGAR 5 and updated links in get_edgar
 
