@@ -51,6 +51,8 @@ pollutants by country and on spatial grid. \code{\link{get_edgar}} provide
 functions to download any of the EDGAR datasets.
 }
 \note{
+\subsection{I will create a package to download all the emissions files, dedicated to that}{
+
 \strong{I recommend 2 ways:}
 
 \strong{1. include 'sector' and do not include 'pol', which download all pollutants as default}
@@ -101,6 +103,7 @@ htap_v2_2  \tab BC, CO, NH3, NMVOC, NOx, OCm, PM10, PM2.5, SO2 \tab
 AIR, ENERGY, INDUSTRY, RESIDENTIAL, SHIPS TRANSPORT \tab 2008 and 2010 \\cr
 }
 voc11 only 2008
+}
 }
 \examples{
 \donttest{

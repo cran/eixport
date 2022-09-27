@@ -7,7 +7,7 @@
 a numeric vector
 }
 \usage{
-wrf_profile(x, file, adjust = 0, verbose = T)
+wrf_profile(x, file, adjust = 0, verbose = TRUE)
 }
 \arguments{
 \item{x}{data.frame of intenticy of traffic by hours (rows) and weekdays
@@ -19,6 +19,9 @@ wrf_profile(x, file, adjust = 0, verbose = T)
 
 \item{verbose}{display additional information}
 }
+\value{
+a vector with a profile
+}
 \description{
 returns a traffic intensity profile (based on wrf file Times)
 and a traffic intensity data frame
@@ -27,7 +30,7 @@ and a traffic intensity data frame
 It might be deprecatedin future release
 }
 \examples{
-\dontrun{
+\donttest{
 
 # Profile based on Sao Paulo tunnel experiments
 data(rawprofile)

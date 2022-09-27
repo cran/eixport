@@ -10,6 +10,9 @@ st_explode(net)
 \item{net}{A spatial dataframe of class "sp" or "sf". When class is "sp"
 it is transformed to "sf".}
 }
+\value{
+a spatial data.frame
+}
 \description{
 \code{\link{st_explode}} split a lines data.frame into
 each vertex. It to mimic the function explode from qgis, that the reason for the name
@@ -19,9 +22,9 @@ each vertex. It to mimic the function explode from qgis, that the reason for the
 All variables are transformed into numeric.
 }
 \examples{
-\dontrun{
+\donttest{
 # do not run
-library(vein)
+require(vein)
 data(net)
 net2 <- st_explode(net)
 dim(net)

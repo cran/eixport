@@ -9,6 +9,9 @@ wrf_meta(file = file.choose())
 \arguments{
 \item{file}{Character; name of file interactively (default) or specified}
 }
+\value{
+a list of data.frames describing a NetCDF WRF file.
+}
 \description{
 \code{\link{wrf_meta}} returns the attributes of a wrf
 NetCDF file in a data.frame. Therefore, there is no need to

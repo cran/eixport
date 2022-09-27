@@ -5,13 +5,15 @@
 #' @param file Character; name of file interactively (default) or specified
 #' @param name Character; name of the variable (any variable)
 #' @param POL Numeric; emissions input or string/POSIXlt time
-#' @param mult Numeric; multiplier. If the length is more than 1, it multiplies POL for each
-#' value of mult. It can be used if you want to add an hourly profile to your emissions.
+#' @param k Numeric; multiplier. If the length is more than 1, it multiplies POL for each
+#' value of k. It can be used if you want to add an hourly profile to your emissions.
+#' @param check logic (default is FALSE), TRUE to check for NA and negative values and replace with zeros
 #' @param verbose display additional information
 #'
+#' @return Add vars to a NetCDF WRF file.
 #' @export
 #'
-#' @author Daniel Schuch and Sergio Ibarra
+#' @author Daniel Schuch and Sergio Ibarra-Espinosa
 #'
 #' @importFrom  ncdf4 nc_open nc_close ncvar_put
 #'
@@ -41,33 +43,59 @@
 wrf_put <- function (file = file.choose(),
                      name = NA,
                      POL,
-                     mult = NA,
+                     k,
+                     check = FALSE,
                      verbose = FALSE) {
-  if(class(POL[1]) =="POSIXlt" || class(POL[1]) == "POSIXt"){
+  if(check){              # nocov start
+    has_NA  = FALSE
+    has_neg = FALSE
+    n_neg   = 0
+    n_NA    = 0
+    for(i in 1:length(POL)){
+      if(is.na(POL[i])){
+        POL[i] = 0
+        n_NA   = n_NA + 1
+        has_NA = TRUE
+      }
+      if(POL[i] < 0){
+        POL[i]  = 0
+        n_neg   = n_neg + 1
+        has_neg = TRUE
+      }
+    }
+    if(has_NA){
+      warning(paste0(n_NA,' NA values found!\nreplaced by zeros'))
+    }
+    if(has_neg){
+      warning(paste0(n_neg,' negative values found!\nreplaced by zeros'))
+    }
+  }            # nocov end
+
+  if(inherits(POL[1], "POSIXc;t")){
     cat('converting POSIXlt to string\n')      # nocov
     POL <- format(POL,"%Y-%m-%d_%H:%M:%OS")    # nocov
     if(name == 'time')                         # nocov
       name <- 'Times'                          # nocov
   }
   if (verbose) {
-    if (missing(mult)) {                                                           # nocov
-      cat(paste0("writing ", name, " to   ", file, "\n"))                          # nocov
+    if (missing(k)) {                                                    # nocov
+      cat(paste0("writing ", name, " to   ", file, "\n"))                # nocov
     }
     else {
-      cat(paste0("writing ", name, " to   ", file, " multiplier ",mult, "\n"))     # nocov
+      cat(paste0("writing ", name, " to   ", file, " k = ",k, "\n"))     # nocov
     }
   }
   wrfchem <- ncdf4::nc_open(file, write = TRUE)
-  if (missing(mult)) {
+  if (missing(k)) {
     ncdf4::ncvar_put(wrfchem,
                      varid = name,
                      POL)
   }
   else {
-    ncdf4::ncvar_put(wrfchem,                                      # nocov
-                     varid = name,                                 # nocov
-                     unlist(lapply(seq_along(mult),                # nocov
-                                   function(i) {POL*mult[i]})))    # nocov
+    ncdf4::ncvar_put(wrfchem,                                   # nocov
+                     varid = name,                              # nocov
+                     unlist(lapply(seq_along(k),                # nocov
+                                   function(i) {POL*k[i]})))    # nocov
   }
   ncdf4::nc_close(wrfchem)
 }

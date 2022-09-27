@@ -9,7 +9,9 @@
 #' @param barra barblot if TRUE
 #' @param lbarra length of barplot
 #' @param col color vector
+#' @param skip logical, skip plot of constant valuess
 #' @param map function call to plot map lines, points and annotation (experimental)
+#' @param no_title no title plot
 #' @param verbose if TRUE print some information
 #' @param ... Arguments to be passed to plot methods
 #'
@@ -25,18 +27,21 @@
 #' @importFrom graphics .filled.contour Axis axis box layout mtext par plot.new plot.window rect title
 #' @importFrom utils menu
 #' @importFrom cptcity cpt
+#'
+#' @return a plot of a WRF var.
 #' @export
 #'
 #' @seealso \code{\link{Lights}}, \code{\link{to_wrf}} and \code{\link{wrf_create}}
 #'
-#' @examples {
+#' @examples \donttest{
 #'
-#'dir.create(file.path(tempdir(), "EMISS"))
-#'wrf_create(wrfinput_dir = system.file("extdata", package = "eixport"),
-#'           wrfchemi_dir = file.path(tempdir(), "EMISS"))
+#'dir.create(file.path(tempdir(), "EMISS2"))
+#'wrf_create(wrfinput_dir = system.file("extdata",
+#'                                     package = "eixport"),
+#'           wrfchemi_dir = file.path(tempdir(), "EMISS2"))
 #'
 #'# get the name of created file
-#'files <- list.files(path = file.path(tempdir(), "EMISS"),
+#'files <- list.files(path = file.path(tempdir(), "EMISS2"),
 #'                    pattern = "wrfchemi",
 #'                    full.names = TRUE)
 #'
@@ -44,21 +49,21 @@
 #'data(Lights)
 #'to_wrf(Lights, files[1], total = 1521983, name = "E_CO")
 #'
-#' wrf_plot(files[1], "E_CO")
+#' wrf_plot(files[1], "E_CO", col = cptcity::cpt(n = 14))
 #'}
 wrf_plot <- function(file = file.choose(),
                      name = NA,
                      time = 1,
                      nivel = 1,
-                     barra = T,
+                     barra = TRUE,
                      lbarra = 0.2,
-                     col = cptcity::cpt(n = 20, rev = T),
+                     col = cptcity::cpt(n = 20,
+                                        rev = TRUE),
                      map = NULL,
+                     skip = FALSE,
+                     no_title = FALSE,
                      verbose = TRUE,
                      ...){
-
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
 
   wrfchem <- ncdf4::nc_open(file)                                      # iteractive
   if(is.na(name)){                                                     # nocov start
@@ -69,14 +74,31 @@ wrf_plot <- function(file = file.choose(),
     POL   <- ncvar_get(wrfchem,name)
   }
 
-  xlat      <- ncdf4::ncvar_get(wrfchem, varid="XLAT")
-  xlong     <- ncdf4::ncvar_get(wrfchem, varid="XLONG")
+  coordvarList = names(wrfchem[['var']])
+  print(coordvarList)
+  if ("XLONG_M" %in% coordvarList & "XLAT_M" %in% coordvarList) {
+    xlong <- ncdf4::ncvar_get(wrfchem, "XLONG_M")                            # nocov
+    xlat  <- ncdf4::ncvar_get(wrfchem, "XLAT_M")                             # nocov
+  } else if ("XLONG" %in% coordvarList & "XLAT" %in% coordvarList) {
+    xlong <- ncdf4::ncvar_get(wrfchem, "XLONG")
+    xlat  <- ncdf4::ncvar_get(wrfchem, "XLAT")
+  } else if ("lon" %in% coordvarList & "lat" %in% coordvarList) {            # nocov
+    xlong <- ncdf4::ncvar_get(wrfchem, "lon")                                # nocov
+    xlat  <- ncdf4::ncvar_get(wrfchem, "lat")                                # nocov
+  } else if ("longitude" %in% coordvarList & "latitude" %in% coordvarList) { # nocov
+    xlong <- ncdf4::ncvar_get(wrfchem, "longitude")                          # nocov
+    xlat  <- ncdf4::ncvar_get(wrfchem, "latitude")                           # nocov
+  } else {
+    stop('Error: Latitude and longitude fields not found (tried: XLAT_M/XLONG_M, XLAT/XLONG, lat/lon longitude/latitude') # nocov
+  }
+
   lat       <- range(xlat)
   lon       <- range(xlong)
   y         <- xlat [1, ]
   x         <- xlong[ ,1]
 
-  Times     <- ncdf4::ncvar_get(wrfchem, varid="Times")
+  if(!no_title)
+    Times <- ncdf4::ncvar_get(wrfchem, varid="Times")
 
   ncdf4::nc_close(wrfchem)
 
@@ -88,13 +110,18 @@ wrf_plot <- function(file = file.choose(),
   }
 
   if(verbose){
-    cat(wrfchem$filename,"\n",name,":\n",sep = "")  # nocov
-    if(max(POL) == min(POL)){                       # nocov
-      cat("Max value = Min Value!\n")               # nocov
+    cat(wrfchem$filename,"\n",name,":\n",sep = "")         # nocov
+    if(max(POL) == min(POL)){                              # nocov
+      cat(paste("Max value = Min Value =",max(POL),"\n"))  # nocov
     }
     else{
       cat(paste("Max value: ",max(POL),", Min value: ",min(POL),sep = "","\n")) # nocov
     }
+  }
+
+  if(skip & max(POL) == min(POL)){
+    cat('skiping plot\n') # nocov
+    return()              # nocov
   }
 
   filled.contour2 <-  function (x = seq(0, 1, length.out = nrow(z)),
@@ -137,7 +164,7 @@ wrf_plot <- function(file = file.choose(),
       y <- x$y                                       # nocov
       x <- x$x                                       # nocov
     }
-    if (any(diff(x) <= 0) || any(diff(y) <= 0))
+    if (any(diff(x) <= 0) | any(diff(y) <= 0))
       stop("increasing 'x' and 'y' values expected") # nocov
     mar.orig <- (par.orig <- par(c("mar", "las", "mfrow")))$mar
     w <- (3 + mar.orig[2]) * par("csi") * 2.54
@@ -146,7 +173,7 @@ wrf_plot <- function(file = file.choose(),
     plot.new()
     par(mar=mar)
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
-    if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1)
+    if (!is.matrix(z) | nrow(z) <= 1 | ncol(z) <= 1)
       stop("no proper 'z' matrix specified")         # nocov
     if (!is.double(z))
       storage.mode(z) <- "double"                    # nocov
@@ -182,18 +209,21 @@ wrf_plot <- function(file = file.choose(),
     title(titulo)
   }
 
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
 
   if(barra){
-    old.par <- par(mar = c(0, 0, 0, 0))
+    par(mar = c(0, 0, 0, 0))
     layout(matrix(c(1,2),
                   ncol = 2,
                   nrow = 1,
-                  byrow = T),
+                  byrow = TRUE),
            widths = c(1,lbarra))
     par(mar=c(3.5, 3.5, 3, 0))
   }
   filled.contour2(x, y, POL, col = col)
-  mtext(paste("WRF-Chem emissions - Time:", Times[time]), 3, line = 0.8)
+  if(!no_title)
+    mtext(paste("WRF-Chem emissions - Time:", Times[time]), 3, line = 0.8)
   mtext("Latitude", 2, line = 2.2,cex = 1.2, las=0)
   mtext("Longitude", 1, line = 2.2,cex = 1.2)
   if(!is.null(map)){
@@ -203,7 +233,6 @@ wrf_plot <- function(file = file.choose(),
     par(mar = c(3.5, 1, 3, 4))
     barras(POL, col = col)
     mtext(name, 3, line = 0.8)
-    par(old.par)
     par(mfrow = c(1, 1))
   }
 }

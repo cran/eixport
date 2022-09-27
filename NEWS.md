@@ -1,16 +1,41 @@
 NEWS
 ===========
 
+# eixport 0.5.3 (Release date: 14 Bpril 2022)
+- updated wrf_raster projections
+- added support to WRF Polar and Mercator grids in wrf_raster
+- wrf_get(as_raster = T) uses wrf_raster
+
+# eixport 0.5.2 (Release date: 19 Feb 2022)
+- updated wrf_raster cen_lon
+
+# eixport 0.5.1 (Release date: 13 jul 2021)
+- added prefix argument in wrf_create, doc update
+- added check option on wrf_put (to check NA and negative values)
+
+# eixport 0.5.1 (Release date: 30 jun 2021)
+- added support for 4d arrays in wrf_raster
+- added support to Equidistant Cylindrical projection in wrf_raster function
+
+# eixport 0.5.1 (Release date: 16 mar 2021)
+- added overwrite option in wrf_create
+- updates in wrf_create for all wrf emission options
+- added argument return_fn to return the name of last file created
+- wrf_meta uses stringsAsFactors = FALSE
+
+# eixport 0.5.1 (Release date: 12 nov 2020)
+- wrf_create returns file_name
+
 # eixport 0.5.0 (Release date: 12 nov 2020)
 - Add wrf_summary
 - fix #56
-- add neu_ecb05 which is ecb05_opt2 avvording Northeastern University group.
--update emisco
+- add neu_ecb05 which is ecb05_opt2 Northeastern University group.
+- update emisco
 - remove geometry arguments from to_rline, now derived in to_rline
 - replaces sfx_explode with own function with data.table.
 - Drops dependence on tidyr, silicate (>= 0.3), sfheaders (>= 0.2.1).
 - Update chem_edgar neu_cb05 (2020-11-07)
-- Add articleto plot domains
+- Add article to plot domains
 
 # eixport 0.4.10 (Release date: 24 sep 2020)
 - Add `chem_edgar` to read EDGAR`s NetCDF and return RasterStack from Chemical Mechanism.

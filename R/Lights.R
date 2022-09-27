@@ -7,7 +7,7 @@
 #'
 #' @seealso \code{\link{to_wrf}}
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #'
 #' dir.create(file.path(tempdir(), "EMISS"))
 #' wrf_create(wrfinput_dir = system.file("extdata", package = "eixport"),

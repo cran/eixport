@@ -26,11 +26,12 @@
 #'
 #' @import ncdf4
 #'
+#' @return Write files to a wrf netcdf file
 #' @export
 #'
 #' @seealso \link{wrf_create}, \code{\link{wrf_get}},\code{\link{wrf_profile}}  and \code{\link{wrf_plot}}
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #' dir.create(file.path(tempdir(), "EMISS"))
 #' wrf_create(wrfinput_dir = system.file("extdata", package = "eixport"),
 #'            wrfchemi_dir = file.path(tempdir(), "EMISS"),

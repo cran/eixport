@@ -11,9 +11,11 @@ wrf_get(
   file = file.choose(),
   name = NA,
   as_raster = FALSE,
-  raster_crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+  raster_crs = "WRF",
   raster_lev = 1,
-  verbose = FALSE
+  k = NA,
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{
@@ -23,14 +25,28 @@ wrf_get(
 
 \item{as_raster}{return a raster instead of an array}
 
-\item{raster_crs}{crs to use if as_raster is TRUE}
+\item{raster_crs}{crs of outputif as_raster is TRUE, see details}
 
 \item{raster_lev}{level for rasters from a 4D variable}
 
+\item{k}{multiplier}
+
 \item{verbose}{display additional information}
+
+\item{...}{additional parameters passed to wrf_raster}
+}
+\value{
+Read vars from NetCDF WRF file.
 }
 \description{
 Read a variable
+}
+\details{
+wrf_get can return a raster object with the option as_raster = TRUE,
+raster_crs can be used to specify the output crs of the raster object,
+raster_crs = 'latlon' can be especifyed to use latlon option in wrf_raster.
+If raster_crs is 'WRF' (default), the output projection is equivalent to
+the WRF grid.
 }
 \examples{
 {

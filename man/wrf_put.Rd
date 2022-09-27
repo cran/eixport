@@ -4,7 +4,14 @@
 \alias{wrf_put}
 \title{Function to write variables in emission files}
 \usage{
-wrf_put(file = file.choose(), name = NA, POL, mult = NA, verbose = FALSE)
+wrf_put(
+  file = file.choose(),
+  name = NA,
+  POL,
+  k,
+  check = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{file}{Character; name of file interactively (default) or specified}
@@ -13,10 +20,15 @@ wrf_put(file = file.choose(), name = NA, POL, mult = NA, verbose = FALSE)
 
 \item{POL}{Numeric; emissions input or string/POSIXlt time}
 
-\item{mult}{Numeric; multiplier. If the length is more than 1, it multiplies POL for each
-value of mult. It can be used if you want to add an hourly profile to your emissions.}
+\item{k}{Numeric; multiplier. If the length is more than 1, it multiplies POL for each
+value of k. It can be used if you want to add an hourly profile to your emissions.}
+
+\item{check}{logic (default is FALSE), TRUE to check for NA and negative values and replace with zeros}
 
 \item{verbose}{display additional information}
+}
+\value{
+Add vars to a NetCDF WRF file.
 }
 \description{
 Extract variable
@@ -48,5 +60,5 @@ wrf_put(file = files[1],
 \code{\link{wrf_plot}} and \code{\link{wrf_get}}
 }
 \author{
-Daniel Schuch and Sergio Ibarra
+Daniel Schuch and Sergio Ibarra-Espinosa
 }

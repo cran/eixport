@@ -21,6 +21,8 @@
 #' @param verbose Logical, to print more information.
 #' @return Downloads data
 #' @note
+#'
+#' ##### I will create a package to download all the emissions files, dedicated to that
 #' **I recommend 2 ways:**
 #'
 #' **1. include 'sector' and do not include 'pol', which download all pollutants as default**
@@ -150,7 +152,7 @@ get_edgar <- function(dataset = "v50_AP",
 
   eda <- ed
   if(missing(year)){
-    warning("Downloading all available years")                                    # nocov
+    message("Downloading all available years")                                    # nocov
   } else {
     ed <- ed[ed$year %in% year, ]
     if(nrow(ed) == 0) {
@@ -172,7 +174,7 @@ get_edgar <- function(dataset = "v50_AP",
 
   eda <- ed
   if(missing(pol)){
-    warning("Downloading all available pollutants") # nocov
+    message("Downloading all available pollutants") # nocov
   } else {
     ed <- ed[ed$pol %in% pol, ]
     if(nrow(ed) == 0) {
@@ -185,7 +187,7 @@ get_edgar <- function(dataset = "v50_AP",
 
   eda <- ed
   if(missing(type)){
-    warning("Downloading all available pollutants")
+    message("Downloading all available pollutants")
   } else {
     ed <- ed[ed$type %in% type, ]
     if(nrow(ed) == 0) {

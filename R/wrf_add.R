@@ -10,6 +10,7 @@
 #'
 #' @importFrom  ncdf4 nc_open nc_close ncvar_get ncvar_put
 #'
+#' @return Adds vars too a NEtCDF WRF file
 #' @export
 #'
 #' @author Daniel Schuch

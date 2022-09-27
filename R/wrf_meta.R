@@ -5,6 +5,7 @@
 #' use ncdump -h "wrf_file"
 #' @param file Character; name of file interactively (default) or specified
 #' @importFrom ncdf4 nc_open ncatt_get nc_close
+#' @return a list of data.frames describing a NetCDF WRF file.
 #' @export
 #' @examples {
 #' file = paste0(system.file("extdata", package = "eixport"),"/wrfinput_d02")
@@ -13,10 +14,10 @@
 wrf_meta <- function(file = file.choose()){
   nc <- ncdf4::nc_open(file)
   na <- names(nc$var)
-  na <- data.frame(vars = names(nc$var))
-  na <- data.frame(vars = na[na$vars != "Times", ])
+  na <- data.frame(vars = names(nc$var), stringsAsFactors = FALSE)
+  na <- data.frame(vars = na[na$vars != "Times", ], stringsAsFactors = FALSE)
 
-  latts <- as.data.frame(unlist(ncdf4::ncatt_get(nc, 0)))
+  latts <- as.data.frame(unlist(ncdf4::ncatt_get(nc, 0)), stringsAsFactors = FALSE)
   latts <- data.frame(att = row.names(latts),
                       vars = latts[[1]])
 

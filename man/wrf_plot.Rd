@@ -9,10 +9,12 @@ wrf_plot(
   name = NA,
   time = 1,
   nivel = 1,
-  barra = T,
+  barra = TRUE,
   lbarra = 0.2,
-  col = cptcity::cpt(n = 20, rev = T),
+  col = cptcity::cpt(n = 20, rev = TRUE),
   map = NULL,
+  skip = FALSE,
+  no_title = FALSE,
   verbose = TRUE,
   ...
 )
@@ -34,9 +36,16 @@ wrf_plot(
 
 \item{map}{function call to plot map lines, points and annotation (experimental)}
 
+\item{skip}{logical, skip plot of constant valuess}
+
+\item{no_title}{no title plot}
+
 \item{verbose}{if TRUE print some information}
 
 \item{...}{Arguments to be passed to plot methods}
+}
+\value{
+a plot of a WRF var.
 }
 \description{
 Create a quick plot from wrf emission file
@@ -48,14 +57,15 @@ time with control the level which will be ploted
 In case of an error related to plot.new() margins lbarra must be adjusted
 }
 \examples{
-{
+\donttest{
 
-dir.create(file.path(tempdir(), "EMISS"))
-wrf_create(wrfinput_dir = system.file("extdata", package = "eixport"),
-          wrfchemi_dir = file.path(tempdir(), "EMISS"))
+dir.create(file.path(tempdir(), "EMISS2"))
+wrf_create(wrfinput_dir = system.file("extdata",
+                                    package = "eixport"),
+          wrfchemi_dir = file.path(tempdir(), "EMISS2"))
 
 # get the name of created file
-files <- list.files(path = file.path(tempdir(), "EMISS"),
+files <- list.files(path = file.path(tempdir(), "EMISS2"),
                    pattern = "wrfchemi",
                    full.names = TRUE)
 
@@ -63,7 +73,7 @@ files <- list.files(path = file.path(tempdir(), "EMISS"),
 data(Lights)
 to_wrf(Lights, files[1], total = 1521983, name = "E_CO")
 
-wrf_plot(files[1], "E_CO")
+wrf_plot(files[1], "E_CO", col = cptcity::cpt(n = 14))
 }
 }
 \seealso{

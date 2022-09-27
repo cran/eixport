@@ -16,6 +16,9 @@ long comes from mass grid, XLONG_M and XLAT_M}
 
 \item{as_raster}{logical, to return a raster}
 }
+\value{
+Returns a sf polygon grid from a NetCDF wrf file
+}
 \description{
 Return a Spatial Feature multipolygon or matrix
 }

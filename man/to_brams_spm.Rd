@@ -30,7 +30,7 @@ input is a data-frame, the output is a data-frame. If the input is a list,
 the output is a list.
 }
 \examples{
-\dontrun{
+\donttest{
 data(gCO)
 df1 <- to_brams_spm(sdf = gCO,
                     epsg = 4326)
