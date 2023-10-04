@@ -27,21 +27,18 @@
 #' @importFrom graphics .filled.contour Axis axis box layout mtext par plot.new plot.window rect title
 #' @importFrom utils menu
 #' @importFrom cptcity cpt
-#'
-#' @return a plot of a WRF var.
 #' @export
 #'
 #' @seealso \code{\link{Lights}}, \code{\link{to_wrf}} and \code{\link{wrf_create}}
 #'
-#' @examples \donttest{
+#' @examples {
 #'
-#'dir.create(file.path(tempdir(), "EMISS2"))
-#'wrf_create(wrfinput_dir = system.file("extdata",
-#'                                     package = "eixport"),
-#'           wrfchemi_dir = file.path(tempdir(), "EMISS2"))
+#'dir.create(file.path(tempdir(), "EMISS"))
+#'wrf_create(wrfinput_dir = system.file("extdata", package = "eixport"),
+#'           wrfchemi_dir = file.path(tempdir(), "EMISS"))
 #'
 #'# get the name of created file
-#'files <- list.files(path = file.path(tempdir(), "EMISS2"),
+#'files <- list.files(path = file.path(tempdir(), "EMISS"),
 #'                    pattern = "wrfchemi",
 #'                    full.names = TRUE)
 #'
@@ -49,16 +46,15 @@
 #'data(Lights)
 #'to_wrf(Lights, files[1], total = 1521983, name = "E_CO")
 #'
-#' wrf_plot(files[1], "E_CO", col = cptcity::cpt(n = 14))
+#' wrf_plot(files[1], "E_CO")
 #'}
 wrf_plot <- function(file = file.choose(),
                      name = NA,
                      time = 1,
                      nivel = 1,
-                     barra = TRUE,
+                     barra = T,
                      lbarra = 0.2,
-                     col = cptcity::cpt(n = 20,
-                                        rev = TRUE),
+                     col = cptcity::cpt(n = 20, rev = T),
                      map = NULL,
                      skip = FALSE,
                      no_title = FALSE,
@@ -217,7 +213,7 @@ wrf_plot <- function(file = file.choose(),
     layout(matrix(c(1,2),
                   ncol = 2,
                   nrow = 1,
-                  byrow = TRUE),
+                  byrow = T),
            widths = c(1,lbarra))
     par(mar=c(3.5, 3.5, 3, 0))
   }

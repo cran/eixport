@@ -21,7 +21,7 @@ Defense Meteorological Satellite Program (DMSP) for 5 Brazilian states (Sao Paul
 \url{https://en.wikipedia.org/wiki/Defense_Meteorological_Satellite_Program}
 }
 \examples{
-\donttest{
+\dontrun{
 
 dir.create(file.path(tempdir(), "EMISS"))
 wrf_create(wrfinput_dir = system.file("extdata", package = "eixport"),

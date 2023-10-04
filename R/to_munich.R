@@ -11,6 +11,10 @@
 #' @param width Integer; width.
 #' @param height Integer; heigth.
 #' @param crs Numeric; Coordenade Reference System to project data or not.
+#' @return A list with a data frame with columns "i", "idbrin", "typo", "xa",
+#' "ya", "xb", "yb" and the pollutants; and another data.frame with "i",
+#' "length" (m), "width" (with value 0) and "height" (with value 0). Width and
+#' height must be obtained by the user.
 #' @references  Kim, Y., Wu, Y., Seigneur, C., and Roustan, Y.:
 #' Multi-scale modeling of urban air pollution: development and application of
 #' a Street-in-Grid model (v1.0) by coupling MUNICH (v1.0) and Polair3D
@@ -19,12 +23,8 @@
 #' @note The user must ensure that the spatial object has one line feature
 #' per vertex and lines with more than one vertex must be previously splitted.
 #' the resulting units must be \strong{ug/km/h}
-#' @return A list with a data frame with columns "i", "idbrin", "typo", "xa",
-#' "ya", "xb", "yb" and the pollutants; and another data.frame with "i",
-#' "length" (m), "width" (with value 0) and "height" (with value 0). Width and
-#' height must be obtained by the user.
 #' @export
-#' @examples \donttest{
+#' @examples \dontrun{
 #' # Not run
 #' library(vein)
 #' library(units)

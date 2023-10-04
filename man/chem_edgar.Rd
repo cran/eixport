@@ -4,14 +4,7 @@
 \alias{chem_edgar}
 \title{Agregate EDGAR emissions NetCDF files into a RasterStack by}
 \usage{
-chem_edgar(
-  path,
-  chem,
-  merge = FALSE,
-  k = rep(1, 34),
-  recursive = TRUE,
-  verbose = TRUE
-)
+chem_edgar(path, chem, merge = FALSE, k = rep(1, 34), verbose = TRUE)
 }
 \arguments{
 \item{path}{Character; path to the NetCDF files from EDGAR. The directory
@@ -32,8 +25,6 @@ chem_edgar(
 merge = TRUE will merge them with sum. Default is FALSE.}
 
 \item{k, }{Numeric; Value to factorize each pollutant.}
-
-\item{recursive}{Logical to search files recursive}
 
 \item{verbose}{Logical to print more information}
 }
@@ -64,47 +55,55 @@ VOLATILES PARA EL MODELO WRF-CHEM, APLICADO A LOS ESQUEMAS RADM-2,
 CBM-Z Y MOZART-4.
 }
 \examples{
-\donttest{
+\dontrun{
+# Not run
 # Downloading EDGAR data ####
-p <- tempdir()
-tot <- paste0(p, "/TOT")
-dir.create(tot)
-
 get_edgar(
   dataset = "v432_VOC_spec",
-  destpath = tot,
+  destpath = "V50_432_AP/TOT/",
   sector = c("TOTALS"),
   type = "nc",
-  year = 2012,
-  ask = FALSE
+  year = 2012
 )
 
 get_edgar(
   dataset = "v50_AP",
-  destpath = tot,
+  destpath = "V50_432_AP/TOT",
   sector = c("TOTALS"),
   type = "nc",
-  year = 2014,
-  ask = FALSE
+  year = 2014
 )
 
-nc <- paste0(p, "/nc")
+get_edgar(
+  dataset = "v432_VOC_spec",
+  destpath = "V50_432_AP/TRO/",
+  sector = c("TRO"),
+  type = "nc",
+  year = 2012, ask = F
+)
+
+get_edgar(
+  dataset = "v50_AP",
+  destpath = "V50_432_AP/TRO",
+  sector = c("TRO_RES", "TRO_noRES"),
+  type = "nc",
+  year = 2014
+)
 
 totals <- list.files(
-  path = tot,
+  path = "V50_432_AP/TOT/",
   full.names = TRUE,
   pattern = ".zip"
 )
+lapply(totals, unzip, exdir = "V50_432_AP/TOT//")
 
-lapply(totals, unzip, exdir = nc)
 
-r <- chem_edgar(path = nc,
-                chem = "radm")
-library(raster)
-plot(r$E_CO)
-r$E_CO[] <- ifelse(r$E_CO[] <= 0, NA, r$E_CO[])
-br <- c(1.133594e-10, 0.001105391, 0.002727838, 0.007006367, 0.0146665,
-0.03192566, 0.08026344, 0.5739333, 4.110863, 16.47688, 6.641064e+05)
-plot(r$E_CO, col = cptcity::cpt(rev = TRUE), breaks = br)
+tros <- list.files(
+  path = "V50_432_AP/TRO",
+  full.names = TRUE,
+  pattern = ".zip"
+)
+lapply(tros, unzip, exdir = "V50_432_AP/TRO/")
+edgar_chem("V50_432_AP/TOT", "radm")
 }
 }

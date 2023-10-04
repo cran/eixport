@@ -37,7 +37,7 @@ per vertex and lines with more than one vertex must be previously splitted.
 the resulting units must be \strong{ug/km/h}
 }
 \examples{
-\donttest{
+\dontrun{
 # Not run
 library(vein)
 library(units)

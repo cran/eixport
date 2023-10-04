@@ -5,7 +5,6 @@
 #' use ncdump -h "wrf_file"
 #' @param file Character; name of file interactively (default) or specified
 #' @importFrom ncdf4 nc_open ncatt_get nc_close
-#' @return a list of data.frames describing a NetCDF WRF file.
 #' @export
 #' @examples {
 #' file = paste0(system.file("extdata", package = "eixport"),"/wrfinput_d02")

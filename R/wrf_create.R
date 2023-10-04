@@ -43,12 +43,11 @@
 #'
 #' @importFrom  ncdf4 nc_open nc_close ncvar_get ncvar_put ncdim_def ncvar_def ncatt_put
 #'
-#' @return Creates NetCDF file
 #' @export
 #'
 #' @seealso \code{\link{to_wrf}} and \code{\link{emis_opt}}
 #'
-#' @examples \donttest{
+#' @examples \dontrun{
 #' # Do not run
 #'
 #' # emissions for a 1 day forecast for domains 1 and 2
@@ -104,20 +103,20 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
   if(a[[1]] == "Windows") linux = FALSE else linux = TRUE           # nocov
   if(a[[1]] == "Windows")
     if(io_style_emissions == 2)                                     # nocov
-      message("NOTE: see wrf_create domumentation notes before run\n")  # nocov
+      cat("NOTE: see wrf_create domumentation notes before run\n")  # nocov
 
   if(length(variables) == 1 & !is.na(variables)[1]){
     emis_opt <- sysdata$emis_opt
     if(variables %in% names(emis_opt)){
       variables <- emis_opt[[variables]]
     }else{
-      message(paste(variables,"is not valid, use one of:\n"))           # nocov
-      message(names(emis_opt))                                          # nocov
+      cat(paste(variables,"is not valid, use one of:\n"))           # nocov
+      cat(names(emis_opt))                                          # nocov
       stop("name, numeric value or a set of variable names")        # nocov
     }
   }
   if(is.na(variables)[1]){
-    message("writing the emission file without emission variables\n")   # nocov
+    cat("writing the emission file without emission variables\n")   # nocov
   }else{
     if(n_aero > length(variables)){
       stop("n_aero cannot be greater than the number of variables ") # nocov
@@ -167,16 +166,16 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
       if(linux){
         file_name <- paste(wrfchemi_dir, "/",prefix,"_d0", domain, "_",
                            format(date,"%Y-%m-%d"),
-                           "_",hora,":", minuto,":", segundo, sep = "")
+                                   "_",hora,":", minuto,":", segundo, sep = "")
       } else  file_name <- paste(wrfchemi_dir, "/",prefix,"_d0", domain, "_",
                                  format(date,"%Y-%m-%d"),
                                  "_", hora, separator, minuto, separator, segundo, sep = "")# nocov end
     }
     if(!overwrite & file.exists(file_name)){
-      message('using current file for domain',domain,'...\n') # nocov
+      cat('using current file for domain',domain,'...\n') # nocov
       next                                                # nocov
     }else{
-      message('creating emission for domain',domain,'...\n')
+      cat('creating emission for domain',domain,'...\n')
     }
 
     if(frames_per_auxinput5 == 1){
@@ -412,9 +411,10 @@ wrf_create  <- function(wrfinput_dir         = getwd(),
       }
     }
 
-    if(verbose) print(emiss_file, "\n")
-
-    message('output file:',emiss_file$filename,'\n')
+    if(verbose){
+      print(emiss_file, "\n")
+    }
+    cat('output file:',emiss_file$filename,'\n')
     ncdf4::nc_close(emiss_file)
     ncdf4::nc_close(wrfinput)
   }

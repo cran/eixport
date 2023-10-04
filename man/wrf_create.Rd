@@ -65,9 +65,6 @@ no compression}
 
 \item{verbose}{print file info}
 }
-\value{
-Creates NetCDF file
-}
 \description{
 Create WRF-chem emission files using information from the WRF initial condictions (wrfinput) file(s). The wrfinput file of the corresponding domain is read from the current folder or from the wrfinput_dir.
 
@@ -88,7 +85,7 @@ Windows users may need to rename the emission files or change in namelist the de
 The separator argument can be useful for write in NTSF format discs on linux systems, for 'default' the separator is ':' for linux-like systems and '\%3A' for windowns.
 }
 \examples{
-\donttest{
+\dontrun{
 # Do not run
 
 # emissions for a 1 day forecast for domains 1 and 2

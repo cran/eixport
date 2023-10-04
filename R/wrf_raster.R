@@ -6,19 +6,14 @@
 #' @param name variable name
 #' @param latlon project the output in "+proj=longlat +datum=WGS84 +no_defs"
 #' @param level only for 4d data, default is 1 (surface)
-#' @param use_sf set TRUE to use sf package instead of rgdal to project XLAT/XLONG
 #' @param as_polygons logical, true to return a poligon instead of a raster
+#' @param map (optional) file with lat-lon variables and grid information
 #' @param verbose display additional information
-#'
-#' @note newer versions of gdal/rgdal can present a issue related to lat/lon
-#' set use_sf to TRUE use functions of sf instead of rgdal
 #'
 #' @import ncdf4
 #' @import raster
-#' @importFrom rgdal project
 #' @import sf
 #'
-#' @return return a raster from a NetCDF WRF file
 #' @export
 #' @examples {
 #'
@@ -32,10 +27,10 @@
 #'}
 wrf_raster <- function(file = file.choose(),
                        name = NA,
-                       latlon = FALSE,
+                       latlon = F,
                        level = 1,
-                       use_sf = FALSE,
                        as_polygons = FALSE,
+                       map,
                        verbose = FALSE){
 
   if(!is.na(name)){
@@ -60,9 +55,16 @@ wrf_raster <- function(file = file.choose(),
   }else{
     POL   <- ncvar_get(wrf,name)
   }
-  if(verbose)  cat(paste("crating raster for",name,'\n'))           # nocov
+  if(verbose)  cat(paste("creating raster for",name,'\n'))          # nocov
 
-  coordNC <- tryCatch(suppressWarnings(ncdf4::nc_open(file)),
+  if(missing(map)){                                                 # nocov
+    coord_file = file                                               # nocov
+  }else{                                                            # nocov
+    coord_file = map                                                # nocov
+    cat('using coods and grid information from',map,'file\n')        # nocov
+  }
+
+  coordNC <- tryCatch(suppressWarnings(ncdf4::nc_open(coord_file)),
                       error=function(cond) {message(cond); return(NA)})  # nocov
 
   coordvarList = names(coordNC[['var']])
@@ -125,7 +127,7 @@ wrf_raster <- function(file = file.choose(),
                          " +lon_0=",ref_lon,             # nocov
                          " +a=6370000 +b=6370000",       # nocov
                          " +datum=WGS84")                # nocov
-  } else if(map_proj == 6){                              # nocov
+  } else if(map_proj %in% c(0, 6)){                      # nocov
     geogrd.proj <- paste0("+proj=eqc +lat_ts=",0,        # nocov
                           " +lat_0=",cen_lat,            # nocov
                           " +lon_0=",ref_lon,            # nocov
@@ -141,15 +143,10 @@ wrf_raster <- function(file = file.choose(),
     stop(paste0('Error: Asymmetric grid cells not supported. DX=', dx, ', DY=', dy))  # nocov
   }
 
-  if(use_sf){
-    pontos     <- sf::st_multipoint(x = as.matrix(cbind(x, y)), dim = "XY")           # nocov
-    coords     <- sf::st_sfc(x = pontos, crs = "+proj=longlat +datum=WGS84 +no_defs") # nocov
-    transform  <- sf::st_transform(x = coords, crs = geogrd.proj)                     # nocov
-    projcoords <- sf::st_coordinates(transform)[,1:2]                                 # nocov
-  }else{
-    coords     <- as.matrix(cbind(x, y))
-    projcoords <- rgdal::project(coords, geogrd.proj)
-  }
+  pontos     <- sf::st_multipoint(x = as.matrix(cbind(x, y)), dim = "XY")           # nocov
+  coords     <- sf::st_sfc(x = pontos, crs = "+proj=longlat +datum=WGS84 +no_defs") # nocov
+  transform  <- sf::st_transform(x = coords, crs = geogrd.proj)                     # nocov
+  projcoords <- sf::st_coordinates(transform)[,1:2]                                 # nocov
 
   # coordinates here refere to the cell center,
   # We need to calculate the boundaries for the raster file
@@ -184,8 +181,14 @@ wrf_raster <- function(file = file.choose(),
       POL <- POL[,,level,,drop = T]
     }
     values(r) <- f2(POL,2)
-    ntimes    <- length(ncvar_get(wrf,'Times'))
     ndim      <- length(dim(POL))
+
+    if('Times' %in% names(wrf$var)){              # this is new!
+      ntimes    <- length(ncvar_get(wrf,'Times'))
+    }else{
+      cat('variable Times not found\n')
+      ntimes    <- 1
+    }
 
     if(ntimes == 1 & ndim > 2){
       names(r)  <- paste(name,'level',formatC(1:dim(r)[3],width = 2, format = "d", flag = "0"),sep="_")
@@ -197,13 +200,17 @@ wrf_raster <- function(file = file.choose(),
   ncdf4::nc_close(wrf)
 
   if(as_polygons){
-    return(rasterToPolygons(r))                 # nocov
+    if(latlon){
+      return(st_transform(x   = st_as_sf(rasterToPolygons(r)),           # nocov
+                          crs = st_crs('+proj=longlat')))                # nocov
+    }else{
+      return(st_as_sf(rasterToPolygons(r)))                              # nocov
+    }
   }else{
     if(latlon){
       return(projectRaster(r, crs="+proj=longlat +datum=WGS84 +no_defs"))  # nocov
     }else{
       return(r)                                 # nocov
-
     }
   }
 }

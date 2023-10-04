@@ -10,6 +10,8 @@
 #'  Features polygon grid class 'sf'.
 #' @param epsg Coordinate reference system, e.g: "4326". Used to transform the
 #' coordinates of the output.
+#' @return data-frame of daily gridded emissions, lat, long and a message with
+#' function.
 #' @note When the input is class 'Spatial', they are converted to 'sf'. If the
 #' input is a data-frame, the output is a data-frame. If the input is a list,
 #' the output is a list.
@@ -21,11 +23,9 @@
 #' 6352–6361, 2005.
 #' @author Sergio Ibarra and Edmilson Freitas
 #' @importFrom sf st_as_sf st_coordinates st_set_geometry st_transform
-#' @return data-frame of daily gridded emissions, lat, long and a message with
-#' function.
 #' @export
 #'
-#' @examples \donttest{
+#' @examples \dontrun{
 #' data(gCO)
 #' df1 <- to_brams_spm(sdf = gCO,
 #'                     epsg = 4326)

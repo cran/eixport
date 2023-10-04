@@ -13,9 +13,6 @@ wrf_add(file = file.choose(), name = NA, POL)
 
 \item{POL}{variable to be written}
 }
-\value{
-Adds vars too a NEtCDF WRF file
-}
 \description{
 Add values to a variable in a netCDF file, the main use is to combine different
 emissions like top-down emission (EmissV emissions) and inventary emission (sush as EDGAR,

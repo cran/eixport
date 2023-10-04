@@ -10,10 +10,9 @@
 #' @param check logic (default is FALSE), TRUE to check for NA and negative values and replace with zeros
 #' @param verbose display additional information
 #'
-#' @return Add vars to a NetCDF WRF file.
 #' @export
 #'
-#' @author Daniel Schuch and Sergio Ibarra-Espinosa
+#' @author Daniel Schuch and Sergio Ibarra
 #'
 #' @importFrom  ncdf4 nc_open nc_close ncvar_put
 #'
@@ -70,8 +69,7 @@ wrf_put <- function (file = file.choose(),
       warning(paste0(n_neg,' negative values found!\nreplaced by zeros'))
     }
   }            # nocov end
-
-  if(inherits(POL[1], "POSIXc;t")){
+  if(class(POL[1])[1] =="POSIXlt" || class(POL[1])[1] == "POSIXt"){
     cat('converting POSIXlt to string\n')      # nocov
     POL <- format(POL,"%Y-%m-%d_%H:%M:%OS")    # nocov
     if(name == 'time')                         # nocov

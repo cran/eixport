@@ -21,9 +21,7 @@
 #'
 #' @importFrom ncdf4 nc_open nc_close ncvar_get ncatt_get
 #' @importFrom raster raster brick flip
-#' @importFrom sp CRS
 #'
-#' @return Read vars from NetCDF WRF file.
 #' @export
 #'
 #' @author Daniel Schuch

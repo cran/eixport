@@ -10,7 +10,7 @@
 #' @examples {
 #' data(emisco)
 #' dim(emisco)
-#' dfco <- sfx_explode(emisco)
+#' dfco <- sfx_explode(emisco[1:100, ])
 #' dim(dfco)
 #' }
 sfx_explode <- function(x) {

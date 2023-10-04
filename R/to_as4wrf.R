@@ -30,7 +30,7 @@
 #' Metropolitan Area: a numerical study with the WRF-Chem model, Atmos. Chem.
 #' Phys., 16, 777-797, doi:10.5194/acp-16-777-2016, 2016.
 #' A good website with timezones is http://www.timezoneconverter.com/cgi-bin/tzc
-#' The crs is the same as used by \code{\link{sp}} package
+#' The crs is the same as used by \code{\link{sf}} package
 #' It returns a dataframe with id,, long, lat, pollutants, time_lt, time_utc
 #' and day-UTC-hour (dutch)
 #' The pollutants for the CBMZ are: e_so2, e_no, e_ald, e_hcho, e_ora2, e_nh3
@@ -49,10 +49,15 @@
 #'                  tz = "America/Sao_Paulo")
 #' head(df2)
 #' }
-to_as4wrf <- function(sdf, nr = 1, dmyhm, tz, crs = 4326, islist){
+to_as4wrf <- function(sdf,
+                      nr = 1,
+                      dmyhm,
+                      tz,
+                      crs = 4326,
+                      islist){
   if(nr <= 0){
     stop("The argument 'nr' must be positive") # nocov
-  } else if (!inherits(sdf, "list")) {
+  } else if (class(sdf)[1] != "list") {
     sdf <- sf::st_as_sf(sdf)
     # if(class(sdf)[1] == "sf"){
     #   sdf <- as(sdf, "Spatial")
@@ -88,7 +93,7 @@ to_as4wrf <- function(sdf, nr = 1, dmyhm, tz, crs = 4326, islist){
         strftime(dft$time_utc, timezone = tz, format = "%d"),
         strftime(dft$time_utc, timezone = tz, format = "%H")
       ))
-  } else if (inherits(sdf, "list")) {
+  } else if (class(sdf)[1] == "list") {
     # if(class(sdf)[1] == "sf"){
     #   sdf <- lapply(sdf, methods::as, "Spatial")
     # }

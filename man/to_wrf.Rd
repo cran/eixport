@@ -32,9 +32,6 @@ to_wrf(
 
 \item{verbose}{display additional information}
 }
-\value{
-Write files to a wrf netcdf file
-}
 \description{
 Function to expand, split and write emissions. The input is expanded into
 time by profile and split between variables with diferent weights.
@@ -51,7 +48,7 @@ sum(profile) = 1 and sum(weights) = 1 to conserve mass
 names and weights must have the same length
 }
 \examples{
-\donttest{
+\dontrun{
 dir.create(file.path(tempdir(), "EMISS"))
 wrf_create(wrfinput_dir = system.file("extdata", package = "eixport"),
            wrfchemi_dir = file.path(tempdir(), "EMISS"),

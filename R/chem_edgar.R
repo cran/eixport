@@ -19,7 +19,6 @@
 #' @param merge Logical; in the case that tehre are more than one NetCDF per pollutant,
 #' merge = TRUE will merge them with sum. Default is FALSE.
 #' @param k, Numeric; Value to factorize each pollutant.
-#' @param recursive Logical to search files recursive
 #' @param verbose Logical to print more information
 #' @return RasterStack
 #' @importFrom raster stack raster rotate
@@ -44,54 +43,61 @@
 #'
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
+#' # Not run
 #' # Downloading EDGAR data ####
-#' p <- tempdir()
-#' tot <- paste0(p, "/TOT")
-#' dir.create(tot)
-#'
 #' get_edgar(
 #'   dataset = "v432_VOC_spec",
-#'   destpath = tot,
+#'   destpath = "V50_432_AP/TOT/",
 #'   sector = c("TOTALS"),
 #'   type = "nc",
-#'   year = 2012,
-#'   ask = FALSE
+#'   year = 2012
 #' )
 #'
 #' get_edgar(
 #'   dataset = "v50_AP",
-#'   destpath = tot,
+#'   destpath = "V50_432_AP/TOT",
 #'   sector = c("TOTALS"),
 #'   type = "nc",
-#'   year = 2014,
-#'   ask = FALSE
+#'   year = 2014
 #' )
 #'
-#' nc <- paste0(p, "/nc")
+#' get_edgar(
+#'   dataset = "v432_VOC_spec",
+#'   destpath = "V50_432_AP/TRO/",
+#'   sector = c("TRO"),
+#'   type = "nc",
+#'   year = 2012, ask = F
+#' )
+#'
+#' get_edgar(
+#'   dataset = "v50_AP",
+#'   destpath = "V50_432_AP/TRO",
+#'   sector = c("TRO_RES", "TRO_noRES"),
+#'   type = "nc",
+#'   year = 2014
+#' )
 #'
 #' totals <- list.files(
-#'   path = tot,
+#'   path = "V50_432_AP/TOT/",
 #'   full.names = TRUE,
 #'   pattern = ".zip"
 #' )
+#' lapply(totals, unzip, exdir = "V50_432_AP/TOT//")
 #'
-#' lapply(totals, unzip, exdir = nc)
 #'
-#' r <- chem_edgar(path = nc,
-#'                 chem = "radm")
-#' library(raster)
-#' plot(r$E_CO)
-#' r$E_CO[] <- ifelse(r$E_CO[] <= 0, NA, r$E_CO[])
-#' br <- c(1.133594e-10, 0.001105391, 0.002727838, 0.007006367, 0.0146665,
-#' 0.03192566, 0.08026344, 0.5739333, 4.110863, 16.47688, 6.641064e+05)
-#' plot(r$E_CO, col = cptcity::cpt(rev = TRUE), breaks = br)
+#' tros <- list.files(
+#'   path = "V50_432_AP/TRO",
+#'   full.names = TRUE,
+#'   pattern = ".zip"
+#' )
+#' lapply(tros, unzip, exdir = "V50_432_AP/TRO/")
+#' edgar_chem("V50_432_AP/TOT", "radm")
 #' }
 chem_edgar <- function(path,
                        chem,
                        merge = FALSE,
                        k = rep(1, 34),
-                       recursive = TRUE,
                        verbose = TRUE) {
   dte <- sysdata$dte                         # nocov start
   emis_opt <- sysdata$emis_opt               # to heavy to check cod-cov
@@ -102,10 +108,8 @@ chem_edgar <- function(path,
   ncs <- list.files(
     path = path,
     full.names = TRUE,
-    pattern = ".nc",
-    recursive = recursive
+    pattern = ".nc"
   )
-
   # just checking units again
   a <- ncdf4::nc_open(ncs[1])
   cat("units: ", a$var[[1]]$units, "\n")
@@ -156,7 +160,7 @@ chem_edgar <- function(path,
 
   la <- unique(unlist(lapply(lncs, length)))
 
-  if (length(la) > 1 & !merge) stop("There should be 1 NetCDF per pollutant")
+  if (length(la) > 1 & !merge) stop("There should be 1 NetCDF per pollutantt")
 
   fr <- function(x) raster::rotate(raster::raster(x)) * 1000 * 3600 * 1000 * 1000
 

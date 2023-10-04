@@ -27,9 +27,6 @@ value of k. It can be used if you want to add an hourly profile to your emission
 
 \item{verbose}{display additional information}
 }
-\value{
-Add vars to a NetCDF WRF file.
-}
 \description{
 Extract variable
 }
@@ -60,5 +57,5 @@ wrf_put(file = files[1],
 \code{\link{wrf_plot}} and \code{\link{wrf_get}}
 }
 \author{
-Daniel Schuch and Sergio Ibarra-Espinosa
+Daniel Schuch and Sergio Ibarra
 }

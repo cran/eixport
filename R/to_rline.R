@@ -19,11 +19,11 @@
 #' @param experimental Boolean argument to denote the use of the experimental
 #' features (TRUE) or not (FALSE).
 #' @param crs Numeric; Coordenade Reference System to project data or not.
+#' @return Data frame with format for R-LINE model.
 #' @note Michelle G. Snyder, Akula Venkatram, David K. Heist, Steven G. Perry,
 #' William B. Petersen, Vlad Isakov, RLINE: A line source dispersion model
 #' for near-surface releases, In Atmospheric Environment, Volume 77, 2013,
 #' Pages 748-756, ISSN 1352-2310, https://doi.org/10.1016/j.atmosenv.2013.05.074.
-#' @return Data frame with format for R-LINE model.
 #' @export
 #' @examples {
 #' data(emisco)

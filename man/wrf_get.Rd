@@ -35,9 +35,6 @@ wrf_get(
 
 \item{...}{additional parameters passed to wrf_raster}
 }
-\value{
-Read vars from NetCDF WRF file.
-}
 \description{
 Read a variable
 }

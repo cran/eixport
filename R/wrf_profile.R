@@ -13,12 +13,11 @@
 #'
 #' @author Daniel Schuch
 #'
-#' @return a vector with a profile
 #' @export
 #' @note It might be deprecatedin future release
 #' @seealso \code{\link{wrf_create}} and \code{\link{to_wrf}}
 #'
-#' @examples \donttest{
+#' @examples \dontrun{
 #'
 #' # Profile based on Sao Paulo tunnel experiments
 #' data(rawprofile)
@@ -55,10 +54,7 @@
 #'      at = 0.5 + c(0, 6, 12, 18, 24),
 #'     labels = c("00:00","06:00","12:00","18:00", "00:00"))
 #'}
-wrf_profile <- function(x,
-                        file,
-                        adjust = 0 ,
-                        verbose = TRUE){
+wrf_profile <- function(x,file,adjust = 0 ,verbose = T){
   x       <- as.data.frame(x)
   times   <- wrf_get(file,"Times")
   profile <- vector(mode = "numeric",length = length(times))

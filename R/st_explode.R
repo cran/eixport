@@ -7,12 +7,11 @@
 #' it is transformed to "sf".
 #' @importFrom sf st_sf st_as_sf st_set_geometry st_length  st_intersection
 #' @export
-#' @return a spatial data.frame
 #' @note All variables are transformed into numeric.
 #'
-#' @examples \donttest{
+#' @examples \dontrun{
 #' # do not run
-#' require(vein)
+#' library(vein)
 #' data(net)
 #' net2 <- st_explode(net)
 #' dim(net)
@@ -41,7 +40,7 @@ st_explode <- function(net){
   df[, namesnet] <- df[, namesnet] * as.numeric(df$LKM2/df$LKM)
   df[, namesnet] <- df[, namesnet] * snetdf/sum(df[, namesnet], na.rm = TRUE)
 
-  cat(paste0("Sum: ", round(sum(df[, namesnet], na.rm = TRUE), 2), "\n"))
+  cat(paste0("Sum: ", round(sum(df[, namesnet], na.rm = T), 2), "\n"))
 
   df <- sf::st_sf(as.data.frame(df), geometry = df$geometry)
 
