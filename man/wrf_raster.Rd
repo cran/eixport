@@ -11,7 +11,8 @@ wrf_raster(
   level = 1,
   as_polygons = FALSE,
   map,
-  verbose = FALSE
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ wrf_raster(
 \item{map}{(optional) file with lat-lon variables and grid information}
 
 \item{verbose}{display additional information}
+
+\item{...}{extra arguments passed to ncdf4::ncvar_get}
 }
 \description{
 Return a Raster

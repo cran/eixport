@@ -8,6 +8,7 @@
 #' @param level only for 4d data, default is 1 (surface)
 #' @param as_polygons logical, true to return a poligon instead of a raster
 #' @param map (optional) file with lat-lon variables and grid information
+#' @param ... extra arguments passed to ncdf4::ncvar_get
 #' @param verbose display additional information
 #'
 #' @import ncdf4
@@ -31,7 +32,8 @@ wrf_raster <- function(file = file.choose(),
                        level = 1,
                        as_polygons = FALSE,
                        map,
-                       verbose = FALSE){
+                       verbose = FALSE,
+                       ...){
 
   if(!is.na(name)){
     if(name == 'time'){
@@ -50,10 +52,10 @@ wrf_raster <- function(file = file.choose(),
   wrf <- ncdf4::nc_open(file)
   if(is.na(name)){                                                  # nocov start
     name  <- menu(names(wrf$var), title = "Choose the variable:")
-    POL   <- ncdf4::ncvar_get(wrf, names(wrf$var)[name])
+    POL   <- ncdf4::ncvar_get(wrf, names(wrf$var)[name], ... )
     name  <- names(wrf$var)[name]                                   # nocov end
   }else{
-    POL   <- ncvar_get(wrf,name)
+    POL   <- ncdf4::ncvar_get(wrf,name, ... )
   }
   if(verbose)  cat(paste("creating raster for",name,'\n'))          # nocov
 
@@ -191,9 +193,11 @@ wrf_raster <- function(file = file.choose(),
     }
 
     if(ntimes == 1 & ndim > 2){
-      names(r)  <- paste(name,'level',formatC(1:dim(r)[3],width = 2, format = "d", flag = "0"),sep="_")
+      if(nlayers(r) == dim(r)[3])
+        names(r)  <- paste(name,'level',formatC(1:dim(r)[3],width = 2, format = "d", flag = "0"),sep="_")
     }else{
-      names(r)  <- paste(name,ncvar_get(wrf,'Times'),sep="_")
+      if(nlayers(r) == length(ncvar_get(wrf,'Times')))
+        names(r)  <- paste(name,ncvar_get(wrf,'Times'),sep="_")
     }
   }                                                         # nocov end
 
